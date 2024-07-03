@@ -3,17 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      .timer {
-        font-size: 2em;
-        font-weight: bold;
-      }
-    </style>
+    <title>Weather Widget</title>
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="timer" id="timer">01:25</div>
-    <button id="startTimer">Start Timer</button>
+    <div class="weather-widget" id="weather-widget">
+      <h2>Погода у вашому місті</h2>
+      <p class="description">Завантаження...</p>
+      <p class="temp"></p>
+      <p class="humidity"></p>
+      <button class="refresh-btn" id="refresh-btn">Оновити</button>
+    </div>
+
     <script src="./script.js"></script>
   </body>
 </html>

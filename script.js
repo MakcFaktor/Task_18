@@ -1,25 +1,27 @@
-let countdown;
-let timeLeft = 85;
+const apiKey = 'f19787ae1432068d8c47f0fdb264c519';
+const city = 'Odessa';
 
-function startTimer() {
-    const timerDisplay = document.getElementById('timer');
-
-    function updateDisplay() {
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-
-        timerDisplay.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-        if (timeLeft <= 0) {
-            clearInterval(countdown);
+async function fetchWeather() {
+    try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
         }
-
-        timeLeft--;
+        const data = await response.json();
+        updateWeatherWidget(data);
+    } catch (error) {
+        console.error('Fetch weather failed:', error);
+        document.querySelector('.description').textContent = 'Failed to load weather data';
     }
-
-    updateDisplay();
-
-    countdown = setInterval(updateDisplay, 1000);
 }
 
-document.getElementById('startTimer').addEventListener('click', startTimer);
+function updateWeatherWidget(data) {
+    const weatherWidget = document.getElementById('weather-widget');
+    weatherWidget.querySelector('.description').textContent = data.weather[0].description;
+    weatherWidget.querySelector('.temp').textContent = `${data.main.temp}°C`;
+    weatherWidget.querySelector('.humidity').textContent = `Вологість: ${data.main.humidity}%`;
+}
+
+document.getElementById('refresh-btn').addEventListener('click', fetchWeather);
+
+fetchWeather();
